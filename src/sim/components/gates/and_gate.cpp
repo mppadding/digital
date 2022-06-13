@@ -18,12 +18,17 @@ namespace Sim::Components::Gates {
     }
 
     void AND::update(std::size_t pin) {
-        if(pin == m_width || !m_pins[0].is_connected() || !m_pins[1].is_connected() || !m_pins[2].is_connected()) {
+        if(pin == m_width) {
             return;
         }
 
         bool output = true;
         for(std::size_t i = 0; i < m_width; i++) {
+            // One of the pins is disconnected, no need to update output
+            if(!m_pins[i].is_connected()) {
+                return;
+            }
+
             output = output && m_pins[i].get_bit(0);
         }
 
